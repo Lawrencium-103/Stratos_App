@@ -147,8 +147,9 @@ if st.session_state['gen_scraped_data']:
         
         # Candidate models for fallback
         candidate_models = [
-            "gemini-1.5-flash-latest",
-            "gemini-1.5-pro-latest",
+            "gemini-1.5-flash-002",
+            "gemini-1.5-pro-002",
+            "gemini-1.5-flash",
             "gemini-pro"
         ]
         
