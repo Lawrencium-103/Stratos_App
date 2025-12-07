@@ -1,0 +1,10 @@
+google-generativeai
+python-dotenv
+duckduckgo-search
+requests
+beautifulsoup4
+fake-useragent
+streamlit
+streamlit-agraph
+python-docx
+pandas
