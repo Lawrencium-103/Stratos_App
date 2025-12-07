@@ -121,8 +121,8 @@ def generate_roadmap(niche, user_url, manual_competitors, api_key):
     """
 
     candidate_models = [
-        "gemini-1.5-flash",
-        "gemini-1.5-pro"
+        "gemini-2.5-flash",
+        "gemini-2.5-pro"
     ]
 
     response = None
