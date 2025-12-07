@@ -74,10 +74,8 @@ if st.button("📅 Architect My Content Empire"):
                 
                 # Candidate models for fallback
                 candidate_models = [
-                    "gemini-1.5-flash-002",
-                    "gemini-1.5-pro-002",
                     "gemini-1.5-flash",
-                    "gemini-pro"
+                    "gemini-1.5-pro"
                 ]
                 
                 full_context = "\n\n".join(context_parts)
