@@ -7,7 +7,12 @@ import researcher
 
 # Load Environment
 load_dotenv()
-api_key = os.getenv("GOOGLE_API_KEY")
+
+# Get API key from Streamlit secrets (Cloud) or .env (Local)
+try:
+    api_key = st.secrets["GOOGLE_API_KEY"]
+except:
+    api_key = os.getenv("GOOGLE_API_KEY")
 
 # Apply Branding
 utils.load_css()

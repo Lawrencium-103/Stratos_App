@@ -7,7 +7,12 @@ import utils
 
 # Load environment variables
 load_dotenv()
-api_key = os.getenv("GOOGLE_API_KEY")
+
+# Get API key from Streamlit secrets (Cloud) or .env (Local)
+try:
+    api_key = st.secrets["GOOGLE_API_KEY"]
+except:
+    api_key = os.getenv("GOOGLE_API_KEY")
 
 st.set_page_config(page_title="STRATOS: Generator", page_icon="✍️", layout="wide")
 
