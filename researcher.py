@@ -107,7 +107,7 @@ def generate_keywords(topic, context, api_key):
     """
 
     # Fallback model list
-    candidate_models = ["gemini-1.5-flash", "gemini-1.5-flash-8b", "gemini-1.5-pro"]
+    candidate_models = ["gemini-1.5-flash-latest", "gemini-1.5-pro-latest", "gemini-pro"]
     
     for model_name in candidate_models:
         try:
