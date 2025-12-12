@@ -67,8 +67,6 @@ if st.button("📅 Architect My Content Empire"):
         else:
             # Generate
             with st.spinner("🤖 Architecting your Content Schedule..."):
-            # Generate
-            with st.spinner("🤖 Architecting your Content Schedule..."):
                 # llm_client handles configuration
                 
                 # Candidate models for fallback
