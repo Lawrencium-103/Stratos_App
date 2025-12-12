@@ -113,6 +113,7 @@ if st.button("📅 Architect My Content Empire"):
                         continue # Try next model
                 
                 if success:
+                    utils.track_usage('LinkedIn') # Assume planning saves ~3 hours equivalent
                     st.success("Schedule Generated!")
                     st.rerun()
                 else:

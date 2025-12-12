@@ -121,35 +121,68 @@ def create_docx(markdown_text):
     buffer.seek(0)
     return buffer
 
+def track_usage(platform_type):
+    """
+    Tracks usage stats in Session State.
+    platform_type: 'LinkedIn' (3 hrs saved) or 'Twitter' (1 hr saved) or 'Blog' (4 hrs)
+    """
+    if 'hours_saved' not in st.session_state: st.session_state['hours_saved'] = 0.0
+    if 'content_count' not in st.session_state: st.session_state['content_count'] = 0
+    
+    saved = 0
+    if platform_type == 'LinkedIn': saved = 3.0
+    elif platform_type == 'Twitter': saved = 1.0
+    elif platform_type == 'Blog': saved = 4.0
+    else: saved = 0.5
+    
+    st.session_state['hours_saved'] += saved
+    st.session_state['content_count'] += 1
+
 def display_impact_metrics():
     """
-    Displays the 'Stratos Impact' section with metrics and share buttons.
+    Displays the 'Stratos Impact' section with dynamic metrics, like button, and smart sharing.
     """
     st.markdown("---")
     st.subheader("🚀 Stratos Impact")
     
+    # Initialize Session State metrics if not present
+    if 'hours_saved' not in st.session_state: st.session_state['hours_saved'] = 0.0
+    if 'content_count' not in st.session_state: st.session_state['content_count'] = 0
+    if 'likes' not in st.session_state: st.session_state['likes'] = 0
+    
+    # Metrics Columns
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.metric(label="Time Saved", value="~12 hrs", delta="95%")
+        st.metric(label="Hours Saved (You)", value=f"{st.session_state['hours_saved']} hrs", delta="Efficiency")
     with col2:
-        st.metric(label="Content Velocity", value="10x", delta="High")
+        # Simulated "Global" Average (Static for now, but illustrative)
+        avg_saved = 1250 + int(st.session_state['hours_saved'] * 10)
+        st.metric(label="Community Hours Saved", value=f"{avg_saved}+ hrs", delta="Global")
     with col3:
-        st.metric(label="Strategic Depth", value="Top 1%", delta="Elite")
+        st.metric(label="Content Pieces Generated", value=st.session_state['content_count'])
     with col4:
-        st.metric(label="Cost Efficiency", value="$500+", delta="Saved")
+        # Like Button Logic
+        if st.button("❤️ Like Stratos"):
+            if st.session_state['likes'] < 3:
+                st.session_state['likes'] += 1
+                st.toast("Thanks for the love! ❤️")
+            else:
+                st.toast("You've reached the max likes for this session! Spread the word instead! 🚀")
+        st.write(f"Session Likes: {st.session_state['likes']}/3")
         
     st.markdown("### 📢 Share Your Strategy")
+    st.info("💡 **Pro Tip:** The best way to share is to copy your generated content directly!")
     
-    # Social Share Links
-    share_text = "I just architected my entire content strategy in seconds with Stratos AI! ⚡ #StratosAI #ContentStrategy"
-    share_url = "https://stratos-app.streamlit.app" # Replace with actual URL if known
+    # Social Share Links (Pre-filled text)
+    share_text = f"I just saved {st.session_state['hours_saved']} hours on my content strategy using Stratos AI! ⚡ #StratosAI #ContentStrategy"
+    share_url = "https://stratos-app.streamlit.app"
     
     twitter_url = f"https://twitter.com/intent/tweet?text={share_text}&url={share_url}"
     linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url={share_url}"
     
     c1, c2 = st.columns(2)
     with c1:
-        st.link_button("🐦 Share on X (Twitter)", twitter_url)
+        st.link_button("🐦 Tweet Your Savings", twitter_url)
     with c2:
         st.link_button("💼 Share on LinkedIn", linkedin_url)

@@ -99,15 +99,21 @@ if st.session_state['gen_scraped_data']:
             Constraint: Do NOT just paste it. Integrate it as a "Industry Thought" or "Expert Validation" that adds weight to the argument. It must feel like a genuine connection, not a forced shout-out.
             """
 
-    # --- Platform Selection Section ---
-    st.markdown("### 3. Target Platforms")
-    all_platforms = ["LinkedIn", "X (Twitter)", "Instagram/Facebook", "Reddit", "Threads", "Blog Post 1", "AEO Answer Card"]
-    target_platforms = st.multiselect("Select Content to Generate", all_platforms, default=all_platforms)
+    # --- 4. AI Controls ---
+    st.markdown("### 4. AI Controls")
+    temperature = st.slider("Creativity / Temperature", min_value=0.0, max_value=1.0, value=0.7, step=0.1, help="Lower = More Factual/Strict. Higher = More Creative/Viral.")
 
     if st.button("✨ Ignite Viral Engine"):
         if not target_platforms:
             st.error("⚠️ Please select at least one platform.")
         else:
+            # Track Usage
+            for p in target_platforms:
+                if "LinkedIn" in p: utils.track_usage('LinkedIn')
+                elif "Twitter" in p or "X" in p: utils.track_usage('Twitter')
+                elif "Blog" in p: utils.track_usage('Blog')
+                else: utils.track_usage('Other')
+
             # Prepare Model
             # llm_client handles configuration
             
@@ -124,12 +130,29 @@ if st.session_state['gen_scraped_data']:
             
             Do NOT generate content for any other platforms.
             
-            IMPORTANT INSTRUCTION FOR "AEO Answer Card" (If selected):
-            You MUST follow the strict format:
-            1. Start with a Direct Definition (No Intro).
-            2. Use Question Headers.
-            3. End with an FAQ Section.
-            If you fail this structure, the content is useless.
+            --- PLATFORM SPECIFIC RULES (STRICT) ---
+            
+            1. LINKEDIN (The "Thought Leader" Style):
+               - Structure: Hook (Punchy) -> Story/Insight (The "Meat") -> Actionable Value -> Engagement Question.
+               - Tone: Professional but conversational. NO generic AI fluff like "In today's digital landscape..."
+               - Formatting: Use line breaks for readability. Use bullet points for lists.
+            
+            2. X (TWITTER) THREAD:
+               - Length: MUST be 5 to 8 tweets long.
+               - Tweet 1: The Hook (Viral potential).
+               - Tweets 2-7: Value bombs, steps, or insights. One idea per tweet.
+               - Last Tweet: CTA (Retweet/Follow).
+               - Format: Number each tweet (1/8, 2/8, etc.).
+            
+            3. AEO ANSWER CARD (If selected):
+               - Start with a Direct Definition (No Intro).
+               - Use Question Headers.
+               - End with an FAQ Section.
+            
+            --- QUALITY CHECK ---
+            - Ask yourself: "Would a human actually read this?"
+            - If it sounds robotic, REWRITE IT.
+            - Be bold, opinionated, and specific.
             """
         
         st.markdown("### 📝 Generated Content")
@@ -153,7 +176,8 @@ if st.session_state['gen_scraped_data']:
                     system_instruction=system_instruction,
                     model=model_name,
                     stream=True,
-                    api_key=api_key
+                    api_key=api_key,
+                    temperature=temperature
                 )
                 
                 for chunk in response_stream:
@@ -162,6 +186,11 @@ if st.session_state['gen_scraped_data']:
                 
                 # Final render without cursor
                 output_container.markdown(full_text)
+                
+                # Copy to Clipboard Feature
+                st.markdown("### 📋 One-Click Copy")
+                st.code(full_text, language="markdown")
+                st.caption("Click the copy icon in the top right of the code block above to copy everything!")
                 success = True
                 break # Stop if successful
                 
