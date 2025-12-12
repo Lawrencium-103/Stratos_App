@@ -101,8 +101,14 @@ def generate_roadmap(niche, user_url, manual_competitors, api_key):
         print(f"     ⬇️ Crawling {url}...")
         data = crawl_site(url)
         competitor_context += f"\n--- COMPETITOR: {url} ---\n{data}\n"
+
+    # 3. Analyze User Intent (Autocomplete) - NEW
+    print(f"  🔮 Analyzing User Intent for '{niche}'...")
+    import researcher # Import here to avoid circular dependency at top level if any
+    suggestions = researcher.get_google_suggestions(niche)
+    suggestions_str = ", ".join(suggestions) if suggestions else "No specific autocomplete data found."
         
-    # 3. Generate Strategy
+    # 4. Generate Strategy
     print("\n  🧠 The Strategist is building your roadmap...")
     
     # Load Prompt
@@ -121,6 +127,18 @@ def generate_roadmap(niche, user_url, manual_competitors, api_key):
     
     COMPETITOR_CONTEXT:
     {competitor_context}
+    
+    USER INTENT (REAL-TIME SEARCHES):
+    {suggestions_str}
+    
+    *** CRITICAL INSTRUCTION FOR ROADMAP ***
+    You must identify "Content Gaps" - topics that users are searching for (User Intent) but are NOT fully covered by competitors.
+    
+    When listing topics under Pillars, use this format:
+    - For standard topics: "#### 1. Topic Name"
+    - For HIGH DEMAND / UNTAPPED OPPORTUNITIES (based on User Intent): "#### [OPPORTUNITY] Topic Name"
+    
+    Ensure at least 30% of the topics are marked as [OPPORTUNITY] if the data supports it.
     """
 
     # Use OpenRouter via llm_client

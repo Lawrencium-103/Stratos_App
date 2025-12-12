@@ -78,24 +78,38 @@ if st.session_state.get('graph_generated'):
             edges.append(Edge(source="ROOT", target=node_id, width=3, color="#A9A9A9")) # Thicker edge
             current_pillar = node_id
             
-        # Topics are usually "#### 1. Title"
+        # Topics are usually "#### 1. Title" or "#### [OPPORTUNITY] Title"
         elif "####" in line and current_pillar:
-            # Extract name: Remove ####, 1., etc.
-            topic_name = line.replace("####", "").strip()
+            # Extract name: Remove ####
+            raw_name = line.replace("####", "").strip()
+            
+            # Check for Opportunity Tag
+            is_opportunity = "[OPPORTUNITY]" in raw_name
+            
+            # Clean Name
+            topic_name = raw_name.replace("[OPPORTUNITY]", "").strip()
             # Remove leading numbers like "1. "
-            if topic_name[0].isdigit():
+            if topic_name[0].isdigit() and "." in topic_name:
                 parts = topic_name.split(".", 1)
                 if len(parts) > 1:
                     topic_name = parts[1].strip()
             
             node_id = f"T_{topic_name}"
             
-            # Logic to determine Green vs Red
-            is_gap = True # Default to Red (Gap)
-            color = "#FF4B4B" if is_gap else "#00C851" # Red vs Green
+            # Logic to determine Color
+            # Opportunity = Gold/Orange (High Demand)
+            # Standard = Green (Safe/Standard)
+            if is_opportunity:
+                color = "#FF8C00" # Dark Orange / Gold
+                label = f"🔥 {truncate(topic_name)}"
+                size = 25
+            else:
+                color = "#00C851" # Green
+                label = truncate(topic_name)
+                size = 20
             
             # Topic Node (Leaf)
-            nodes.append(Node(id=node_id, label=truncate(topic_name), title=topic_name, size=20, color=color, font={'size': 14, 'color': 'white', 'face': 'arial'}))
+            nodes.append(Node(id=node_id, label=label, title=topic_name, size=size, color=color, font={'size': 14, 'color': 'white', 'face': 'arial'}))
             edges.append(Edge(source=current_pillar, target=node_id, width=1, color="#D3D3D3"))
 
     config = Config(
