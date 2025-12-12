@@ -117,21 +117,50 @@ def generate_keywords(topic, context, api_key):
             
     return f"{topic}, viral content, trending, {topic} news"
 
+def get_google_suggestions(query):
+    """
+    Fetches real-time search suggestions from Google Autocomplete (Free).
+    This reveals 'User Intent' - what people are actually typing.
+    """
+    print(f"  🔮 Fetching Google Autocomplete for: {query}...")
+    url = f"http://suggestqueries.google.com/complete/search?client=chrome&q={query}"
+    try:
+        response = requests.get(url, headers=get_stealth_headers(), timeout=5)
+        if response.status_code == 200:
+            data = response.json()
+            # data[1] contains the list of suggestions
+            suggestions = data[1] if len(data) > 1 else []
+            return suggestions[:10] # Top 10
+    except Exception as e:
+        print(f"  ⚠️ Autocomplete failed: {e}")
+    return []
+
 def deep_research(topic, api_key, reference_url=None):
     """
-    Performs an iterative 'Deep Research' loop.
-    1. Scrape Reference URL (if provided)
-    2. Initial Search
-    3. Analyze & Plan Follow-up
-    4. Follow-up Search
+    Performs 'Intent-First' Deep Research.
+    1. User Intent (Google Autocomplete) - What they WANT.
+    2. Competitor Content (Web Search) - What EXISTS.
+    3. Gap Analysis - The Opportunity.
     """
     print(f"\n🕵️ Deep Researcher Agent starting for: '{topic}'")
-    # genai.configure(api_key=api_key) - Handled by llm_client
     
     context_data = []
     sources = []
 
-    # Phase 0: Reference URL (The "Must Have" source if provided)
+    # --- Phase 1: User Intent (The "Demand") ---
+    print("\n--- Phase 1: Analyzing User Intent ---")
+    suggestions = get_google_suggestions(topic)
+    if suggestions:
+        suggestions_str = ", ".join(suggestions)
+        context_data.append(f"REAL-TIME USER SEARCHES (Google Autocomplete): {suggestions_str}\n")
+        print(f"  ✅ Found {len(suggestions)} high-intent queries: {suggestions[:3]}...")
+    else:
+        context_data.append(f"REAL-TIME USER SEARCHES: {topic} (Base query)\n")
+
+    # --- Phase 2: Competitor Content (The "Supply") ---
+    print("\n--- Phase 2: Analyzing Competitor Content ---")
+    
+    # Reference URL (If provided)
     if reference_url:
         print(f"  ⬇️ Scraping Reference URL: {reference_url}...")
         ref_content = scrape_content(reference_url)
@@ -139,60 +168,61 @@ def deep_research(topic, api_key, reference_url=None):
             context_data.append(f"PRIMARY REFERENCE (User Provided): {reference_url}\nCONTENT: {ref_content}\n")
             sources.append({'title': 'User Reference', 'href': reference_url})
 
-    # Phase 1: Initial Broad Search
-    print("\n--- Phase 1: Initial Recon ---")
+    # Broad Search
     initial_results = search_web(f"{topic} news facts 2025", max_results=3)
     
     for res in initial_results:
-        # Avoid re-scraping the reference url if it appears in search
-        if reference_url and res['href'] == reference_url:
-            continue
+        if reference_url and res['href'] == reference_url: continue
             
         content = scrape_content(res['href'])
         if content:
-            context_data.append(f"SOURCE: {res['title']}\nCONTENT: {content}\n")
+            context_data.append(f"COMPETITOR CONTENT: {res['title']}\nCONTENT: {content}\n")
             sources.append({'title': res.get('title', 'Source'), 'href': res['href']})
             
     initial_context = "\n".join(context_data)
     
-    # Phase 2: Reasoning & Gap Analysis
-    print("\n--- Phase 2: Reasoning & Gap Analysis ---")
+    # --- Phase 3: Gap Analysis & Reasoning ---
+    print("\n--- Phase 3: Gap Analysis ---")
     reasoning_prompt = f"""
     I am researching: "{topic}".
-    Here is what I found so far:
-    {initial_context[:4000]}
     
-    What critical information is missing to write a comprehensive, expert-level article?
-    Generate 2 specific, targeted search queries to find this missing info.
+    DATA SOURCE 1 (DEMAND): Real-time User Searches (Autocomplete)
+    {suggestions}
+    
+    DATA SOURCE 2 (SUPPLY): Existing Competitor Content
+    {initial_context[:3000]}
+    
+    TASK: Identify the "Content Gap". 
+    1. What are users searching for (Source 1) that is NOT fully covered in the competitor content (Source 2)?
+    2. Generate 2 targeted search queries to fill this gap.
+    
     OUTPUT FORMAT: Query 1 | Query 2
     """
     
     follow_up_queries = []
     try:
-        # Use smart model for reasoning
         response = llm_client.generate(reasoning_prompt, model="meta-llama/llama-3.1-70b-instruct", api_key=api_key)
         queries = response.text.strip().split("|")
         follow_up_queries = [q.strip() for q in queries if q.strip()]
-        print(f"  🧠 Missing Info Identified. Searching for: {follow_up_queries}")
+        print(f"  🧠 Gap Identified. Searching for: {follow_up_queries}")
     except Exception as e:
         print(f"  ⚠️ Reasoning failed, skipping deep dive: {e}")
         
-    # Phase 3: Targeted Deep Dive
+    # --- Phase 4: Targeted Deep Dive ---
     if follow_up_queries:
-        print("\n--- Phase 3: Targeted Deep Dive ---")
+        print("\n--- Phase 4: Targeted Deep Dive ---")
         for query in follow_up_queries:
-            deep_results = search_web(query, max_results=1) # Just get the best one
+            deep_results = search_web(query, max_results=1)
             for res in deep_results:
-                # Avoid duplicates
                 if not any(s['href'] == res['href'] for s in sources):
                     content = scrape_content(res['href'])
                     if content:
-                        context_data.append(f"SOURCE: {res['title']} (Deep Dive)\nCONTENT: {content}\n")
+                        context_data.append(f"DEEP DIVE SOURCE: {res['title']}\nCONTENT: {content}\n")
                         sources.append({'title': res.get('title', 'Source'), 'href': res['href']})
 
     full_context = "\n".join(context_data)
     
-    # Generate Keywords
+    # Generate Keywords (Now with Intent Data)
     keywords = generate_keywords(topic, full_context, api_key)
     
     print("✅ Deep Research complete.")
