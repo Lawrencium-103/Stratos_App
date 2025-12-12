@@ -140,9 +140,9 @@ if st.session_state['gen_scraped_data']:
             1. LINKEDIN (The "Strategic Thought Leader"):
                - **Goal:** Drive business conversations and authority.
                - **Structure:**
-                 - **The Hook:** Start with a contrarian statement or a hard truth about the industry. (e.g., "Most people get [Topic] wrong.")
+                 - **The Hook:** Start with a contrarian statement or a hard truth about the industry.
                  - **The Context:** Briefly explain why this matters NOW (Business impact/ROI).
-                 - **The Insight:** Provide 3-4 actionable, high-level strategic points. Use bullet points.
+                 - **The Insight:** Provide 3-4 actionable, high-level strategic points. **EXPAND on each point.** Do not just list them. Write 2-3 sentences per point explaining the "Why" and "How". Make it educational and grounded.
                  - **The Close:** End with a question that demands a comment.
                - **Tone:** Professional, authoritative, yet conversational. NO "In today's fast-paced world."
             
@@ -156,7 +156,21 @@ if st.session_state['gen_scraped_data']:
                  - **Tweet 8 (The CTA):** "If you found this useful, follow me for more on [Niche]."
                - **Tone:** Fast, punchy, slightly aggressive or "edgy". Use line breaks for rhythm.
             
-            3. BLOG POST (The "Deep Dive Authority"):
+            3. INSTAGRAM / FACEBOOK (The "Visual Storyteller"):
+               - **Goal:** Stop the scroll with visuals + story.
+               - **Structure:**
+                 - **Slide 1 (Image Prompt):** Describe a high-contrast, stopping image.
+                 - **Slide 1 (Text Overlay):** A 5-word hook.
+                 - **Caption:** Write a "Micro-Blog" (150-200 words). Tell a story or give a specific tip. Use short paragraphs.
+                 - **Hashtags:** List 10 relevant hashtags.
+            
+            4. THREADS (The "Casual Conversation"):
+               - **Goal:** Spark a discussion.
+               - **Structure:**
+                 - **Post:** A single, thought-provoking question or observation (max 500 chars).
+                 - **Tone:** Casual, like texting a friend. "Hot take: [Opinion]."
+            
+            5. BLOG POST (The "Deep Dive Authority"):
                - **Goal:** Rank on Google and serve as a "Comprehensive Guide".
                - **Structure:**
                  - **Title:** SEO-Optimized, Clickable Title (e.g., "The Ultimate Guide to...").
@@ -169,16 +183,18 @@ if st.session_state['gen_scraped_data']:
                  - **Conclusion:** Summary and final thought.
                - **Content Depth:** Do NOT write a summary. Write a GUIDE. Use specific examples, analogies, and technical details where appropriate.
             
-            4. AEO ANSWER CARD (If selected):
+            6. AEO ANSWER CARD (If selected):
                - Start with a Direct Definition (No Intro).
                - Use Question Headers.
                - End with an FAQ Section.
             
+            --- CRITICAL ATTRIBUTION CHECK ---
+            If an attribution was provided above, you **MUST** include it in the output for the selected platforms. Failure to include the quote/reference is a failure of the task.
+            
             --- QUALITY CHECK ---
-            - **LinkedIn:** Is it strategic? Would a CEO read it?
-            - **Twitter:** Is it punchy? Would it stop the scroll?
-            - **Blog:** Is it deep? Does it teach something new?
-            - **General:** If it sounds like generic AI ("In conclusion", "Delve into"), REWRITE IT. Be bold.
+            - **Depth:** Are the points explained? (No one-line bullets).
+            - **Completeness:** Did you generate content for ALL selected platforms?
+            - **Tone:** Is it human? (No "In conclusion").
             """
         
         st.markdown("### 📝 Generated Content")
