@@ -137,27 +137,48 @@ if st.session_state['gen_scraped_data']:
             
             --- PLATFORM SPECIFIC RULES (STRICT) ---
             
-            1. LINKEDIN (The "Thought Leader" Style):
-               - Structure: Hook (Punchy) -> Story/Insight (The "Meat") -> Actionable Value -> Engagement Question.
-               - Tone: Professional but conversational. NO generic AI fluff like "In today's digital landscape..."
-               - Formatting: Use line breaks for readability. Use bullet points for lists.
+            1. LINKEDIN (The "Strategic Thought Leader"):
+               - **Goal:** Drive business conversations and authority.
+               - **Structure:**
+                 - **The Hook:** Start with a contrarian statement or a hard truth about the industry. (e.g., "Most people get [Topic] wrong.")
+                 - **The Context:** Briefly explain why this matters NOW (Business impact/ROI).
+                 - **The Insight:** Provide 3-4 actionable, high-level strategic points. Use bullet points.
+                 - **The Close:** End with a question that demands a comment.
+               - **Tone:** Professional, authoritative, yet conversational. NO "In today's fast-paced world."
             
-            2. X (TWITTER) THREAD:
-               - Length: MUST be 5 to 8 tweets long.
-               - Tweet 1: The Hook (Viral potential).
-               - Tweets 2-7: Value bombs, steps, or insights. One idea per tweet.
-               - Last Tweet: CTA (Retweet/Follow).
-               - Format: Number each tweet (1/8, 2/8, etc.).
+            2. X (TWITTER) THREAD (The "Viral Opinion"):
+               - **Goal:** Maximum engagement and retweets.
+               - **Structure:**
+                 - **Tweet 1 (The Hook):** A short, punchy, provocative statement. No hashtags here. Just raw opinion.
+                 - **Tweet 2:** The "Meat". Why is the hook true?
+                 - **Tweets 3-6:** Specific examples, data points, or "mental models" to explain the concept. One idea per tweet.
+                 - **Tweet 7 (The Summary):** A TL;DR bullet list of the thread.
+                 - **Tweet 8 (The CTA):** "If you found this useful, follow me for more on [Niche]."
+               - **Tone:** Fast, punchy, slightly aggressive or "edgy". Use line breaks for rhythm.
             
-            3. AEO ANSWER CARD (If selected):
+            3. BLOG POST (The "Deep Dive Authority"):
+               - **Goal:** Rank on Google and serve as a "Comprehensive Guide".
+               - **Structure:**
+                 - **Title:** SEO-Optimized, Clickable Title (e.g., "The Ultimate Guide to...").
+                 - **Introduction:** Hook the reader, define the problem, and state the thesis.
+                 - **Body:** Use H2 and H3 headers. Break down the topic into:
+                   - "What is [Topic]?"
+                   - "Why it Matters" (Data/Stats)
+                   - "Key Strategies/Examples" (The Core Value)
+                   - "Common Pitfalls"
+                 - **Conclusion:** Summary and final thought.
+               - **Content Depth:** Do NOT write a summary. Write a GUIDE. Use specific examples, analogies, and technical details where appropriate.
+            
+            4. AEO ANSWER CARD (If selected):
                - Start with a Direct Definition (No Intro).
                - Use Question Headers.
                - End with an FAQ Section.
             
             --- QUALITY CHECK ---
-            - Ask yourself: "Would a human actually read this?"
-            - If it sounds robotic, REWRITE IT.
-            - Be bold, opinionated, and specific.
+            - **LinkedIn:** Is it strategic? Would a CEO read it?
+            - **Twitter:** Is it punchy? Would it stop the scroll?
+            - **Blog:** Is it deep? Does it teach something new?
+            - **General:** If it sounds like generic AI ("In conclusion", "Delve into"), REWRITE IT. Be bold.
             """
         
         st.markdown("### 📝 Generated Content")
