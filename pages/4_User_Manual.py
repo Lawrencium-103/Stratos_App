@@ -25,6 +25,10 @@ st.markdown("""
 
 #### 1. 🧠 The Strategist (Home)
 *   **Action:** Enter your Niche.
+*   **The Control:** Choose your **Strategy Depth**:
+    *   **Lite (Quick Wins):** for fast, viral traffic.
+    *   **Pro (Balanced):** for building authority.
+    *   **Empire (Dominance):** for total market leadership.
 *   **The Magic:** Stratos scans the web AND real-time search data.
 *   **The Visual:** Look for the **Gold Nodes (🔥)** in your graph. These are your "Money Topics"—the gaps your competitors missed.
 
