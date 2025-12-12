@@ -31,7 +31,22 @@ with col2:
     use_app_data = st.checkbox("Use 'Strategist' Data (Niche/Pillars)", value=True)
     use_custom_data = st.checkbox("Use Custom Input / Notes", value=False)
 
-# --- 2. Custom Input (Conditional) ---
+# --- 2. Posting Configuration ---
+st.markdown("### 2. Posting Configuration")
+col3, col4 = st.columns(2)
+
+with col3:
+    posts_per_day = st.slider("Posts Per Day", min_value=1, max_value=5, value=1, help="How many pieces of content do you want to publish daily?")
+
+with col4:
+    posting_days = st.multiselect(
+        "Active Posting Days",
+        ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        default=["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        help="Select the days you want to be active."
+    )
+
+# --- 3. Custom Input (Conditional) ---
 custom_notes = ""
 if use_custom_data:
     custom_notes = st.text_area("Enter Custom Goals, Topics, or Notes:", placeholder="e.g. Focus on launching our new AI feature next week...")
@@ -84,15 +99,24 @@ if st.button("📅 Architect My Content Empire"):
                 CONTEXT:
                 {full_context}
                 
+                CONSTRAINTS:
+                - **Frequency:** {posts_per_day} post(s) per day.
+                - **Active Days:** Only schedule content for: {', '.join(posting_days)}.
+                - **Content Variety:** You MUST mix content types. Do NOT just post text. Use:
+                  - 📹 Short Video (Reels/TikTok)
+                  - 🖼️ Carousel (Slide Deck)
+                  - 📝 Text Post (LinkedIn/X)
+                  - 📰 Article (Blog/Newsletter)
+                
                 OUTPUT FORMAT:
                 Generate a Markdown Table with the following columns:
-                | Day/Week | Platform | Content Type | Topic / Hook | Tone | Status |
+                | Day | Platform | Content Type | Topic / Hook | Tone | Status |
                 
                 REQUIREMENTS:
-                1. Varied Mix: Balance between Educational, Viral, and Sales content.
-                2. Platform Native: Specify if it's a Thread (X), Carousel (IG), or Article (LinkedIn).
-                3. Strategic Flow: Ensure the topics build upon each other.
-                4. If "Web Research" data is present, integrate those trends.
+                1. **Volume:** If 3 posts/day is requested, list 3 separate rows for that day.
+                2. **Flow:** Ensure the topics build upon each other (e.g., Teaser -> Launch -> Case Study).
+                3. **Platform Native:** Specify the exact format (e.g. "LinkedIn PDF" vs "LinkedIn Text").
+                4. **Trends:** If "Web Research" data is present, integrate those trends.
                 
                 After the table, provide a brief "Execution Strategy" summary (3 bullet points).
                 """
