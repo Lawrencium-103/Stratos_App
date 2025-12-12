@@ -73,7 +73,10 @@ def generate_roadmap(niche, user_url, manual_competitors, api_key):
     """
     Orchestrates the strategy generation.
     """
-    genai.configure(api_key=api_key)
+    """
+    Orchestrates the strategy generation.
+    """
+    # genai.configure(api_key=api_key) - Handled by llm_client
     
     # 1. Analyze User Site (if provided)
     user_context = "User has no existing site."
