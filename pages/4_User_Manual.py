@@ -7,36 +7,36 @@ utils.header("How to Use STRATOS", "From Chaos to Content Empire")
 st.markdown("""
 ### 🌪️ The "AS IS" (Without Stratos)
 *   **The Chaos:** You wake up. You know you need to post, but you stare at a blank screen.
-*   **The Guesswork:** You write something, post it, and hear crickets. Was it the hook? The time? The topic?
-*   **The Burnout:** You try to keep up with LinkedIn, X, and your Blog, but it feels like a second full-time job.
+*   **The Guesswork:** You write something based on a hunch. You post it. *Crickets.*
+*   **The Blind Spot:** You are writing what *you* think is interesting, not what your audience is *actually* searching for right now.
 *   **The Result:** Inconsistency. Low Authority. Missed Opportunities.
 
 ---
 
 ### 🚀 The "TO BE" (With Stratos)
-*   **The Clarity:** You open Stratos. Your **Niche Graph** shows you exactly where the gaps are. You know *what* to write before you even start.
-*   **The Speed:** You click **"Ignite Viral Engine"**. In seconds, you have elite, AEO-optimized content for *every* platform.
-*   **The Authority:** Your content isn't just "AI text." It uses the **Prompt Moat** to sound like an industry veteran—citing data, taking strong stances, and using mental models.
-*   **The Empire:** You download your **3-Month Roadmap**. You are no longer guessing. You are executing a military-grade content strategy.
+*   **The Intelligence:** Stratos doesn't just "guess." It taps into **Real-Time User Intent**. It knows exactly what questions your audience is typing into Google *this very second*.
+*   **The Vision:** You open the **Interactive Graph**. You see **Gold Nodes (🔥)** lighting up. These are "Untapped Opportunities"—topics with high demand but low competition.
+*   **The Speed:** You click **"Ignite Viral Engine"**. In seconds, you have elite, AEO-optimized content that answers those specific user questions.
+*   **The Impact:** You track your **"Time Saved"** and **"Content Velocity"** in real-time. You are no longer just a creator; you are a Content Empire.
 
 ---
 
 ### ⚡ The Workflow: How to Dominate
 
 #### 1. 🧠 The Strategist (Home)
-*   **Action:** Enter your Niche and Competitors.
-*   **Result:** A visual map of your industry. Red nodes are your opportunities.
-*   **Pro Tip:** Don't just look at the graph. Download the **Strategic Roadmap** and read the "Gap Analysis."
+*   **Action:** Enter your Niche.
+*   **The Magic:** Stratos scans the web AND real-time search data.
+*   **The Visual:** Look for the **Gold Nodes (🔥)** in your graph. These are your "Money Topics"—the gaps your competitors missed.
 
 #### 2. 📅 The Planner (Page 2)
 *   **Action:** Choose your timeline (1 Week to 3 Months).
-*   **Result:** A day-by-day battle plan.
-*   **Feature:** Check **"Supplement with Web Research"** to let Stratos scan the live web for trending topics to add to your schedule.
+*   **The Plan:** Stratos builds a schedule that balances "Viral Hits" (for reach) with "Deep Dives" (for authority).
+*   **The Edge:** It prioritizes the **Gold Nodes** to ensure you capture traffic fast.
 
 #### 3. ✍️ The Generator (Page 3)
-*   **Action:** Pick a topic from your plan.
-*   **Feature:** Use **"Personal Attribution"** to inject your own voice or quotes (e.g., *"As Lawrence Oladeji always says..."*).
-*   **Result:** Viral Threads, LinkedIn Thought Leadership, and Google-Ranking Answer Cards.
+*   **Action:** Pick a topic. Adjust the **Temperature Slider** (Strict vs. Creative).
+*   **The Quality:** This isn't generic AI fluff. It uses the **Prompt Moat** to write like an industry veteran—citing data, taking strong stances, and using mental models.
+*   **The Result:** Viral Threads (5-8 tweets), LinkedIn Thought Leadership, and Answer Cards that rank.
 
 ---
 
