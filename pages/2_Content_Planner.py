@@ -172,3 +172,6 @@ if st.session_state['plan_generated']:
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         key='download-docx'
     )
+
+# Show Impact Metrics
+utils.display_impact_metrics()

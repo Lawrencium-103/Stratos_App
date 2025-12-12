@@ -140,3 +140,6 @@ if st.session_state.get('graph_generated'):
         st.session_state['graph_generated'] = False
         st.session_state['roadmap_text'] = ""
         st.rerun()
+
+# Show Impact Metrics on every page load (at the bottom)
+utils.display_impact_metrics()

@@ -187,3 +187,6 @@ if st.session_state['gen_scraped_data']:
                 file_name="generated_content.docx",
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
+
+# Show Impact Metrics
+utils.display_impact_metrics()

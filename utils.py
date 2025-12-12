@@ -1,5 +1,8 @@
 import streamlit as st
 import base64
+import io
+from docx import Document
+from docx.shared import Pt
 
 def load_css():
     """
@@ -82,10 +85,6 @@ def header(title, subtitle=None):
         st.markdown(f"### *{subtitle}*")
     st.markdown("---")
 
-import io
-from docx import Document
-from docx.shared import Pt
-
 def create_docx(markdown_text):
     """
     Converts simple Markdown text to a Word Document binary stream.
@@ -121,3 +120,36 @@ def create_docx(markdown_text):
     doc.save(buffer)
     buffer.seek(0)
     return buffer
+
+def display_impact_metrics():
+    """
+    Displays the 'Stratos Impact' section with metrics and share buttons.
+    """
+    st.markdown("---")
+    st.subheader("🚀 Stratos Impact")
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.metric(label="Time Saved", value="~12 hrs", delta="95%")
+    with col2:
+        st.metric(label="Content Velocity", value="10x", delta="High")
+    with col3:
+        st.metric(label="Strategic Depth", value="Top 1%", delta="Elite")
+    with col4:
+        st.metric(label="Cost Efficiency", value="$500+", delta="Saved")
+        
+    st.markdown("### 📢 Share Your Strategy")
+    
+    # Social Share Links
+    share_text = "I just architected my entire content strategy in seconds with Stratos AI! ⚡ #StratosAI #ContentStrategy"
+    share_url = "https://stratos-app.streamlit.app" # Replace with actual URL if known
+    
+    twitter_url = f"https://twitter.com/intent/tweet?text={share_text}&url={share_url}"
+    linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url={share_url}"
+    
+    c1, c2 = st.columns(2)
+    with c1:
+        st.link_button("🐦 Share on X (Twitter)", twitter_url)
+    with c2:
+        st.link_button("💼 Share on LinkedIn", linkedin_url)
