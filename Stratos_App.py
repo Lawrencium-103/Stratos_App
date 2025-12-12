@@ -27,16 +27,23 @@ with st.sidebar:
     comp_url_1 = st.text_input("Competitor 1 URL", placeholder="Optional")
     comp_url_2 = st.text_input("Competitor 2 URL", placeholder="Optional")
     
-    manual_competitors = []
     if comp_url_1: manual_competitors.append(comp_url_1)
     if comp_url_2: manual_competitors.append(comp_url_2)
+    
+    st.markdown("---")
+    strategy_depth = st.select_slider(
+        "Strategy Depth (Nodes)",
+        options=["Lite (Quick Wins)", "Pro (Balanced)", "Empire (Dominance)"],
+        value="Pro (Balanced)",
+        help="Lite = Viral Focus (15 nodes). Pro = Authority Focus (30 nodes). Empire = Total Niche Domination (70+ nodes)."
+    )
     
     run_btn = st.button("🚀 Initialize Strategy Engine")
 
 if run_btn and niche and api_key:
     with st.spinner("🕵️ The Strategist is analyzing the web... (This may take 1-2 mins)"):
         # 1. Run the existing text-based strategist
-        roadmap_text = strategist.generate_roadmap(niche, user_url, manual_competitors, api_key)
+        roadmap_text = strategist.generate_roadmap(niche, user_url, manual_competitors, api_key, strategy_depth)
         
         st.session_state['roadmap_text'] = roadmap_text
         st.session_state['graph_generated'] = True

@@ -69,15 +69,23 @@ def find_competitors(niche):
     
     return competitors
 
-def generate_roadmap(niche, user_url, manual_competitors, api_key):
-    """
-    Orchestrates the strategy generation.
-    """
+def generate_roadmap(niche, user_url, manual_competitors, api_key, strategy_depth="Pro (Balanced)"):
     """
     Orchestrates the strategy generation.
     """
     # genai.configure(api_key=api_key) - Handled by llm_client
     
+    # Map Depth to Instructions
+    if "Lite" in strategy_depth:
+        structure_instruction = "Generate exactly 3 Pillars. Under each, list 3 Topics. (Total ~12 nodes)."
+        focus_instruction = "Focus strictly on HIGH VIRALITY, TRENDING, and 'Quick Win' topics. We want immediate visibility."
+    elif "Empire" in strategy_depth:
+        structure_instruction = "Generate exactly 8 Pillars. Under each, list 5-8 Topics. (Total ~50+ nodes)."
+        focus_instruction = "Focus on TOTAL NICHE DOMINANCE. Cover every angle: Viral, Technical, Long-tail, and Commercial Intent. Leave no gap unfilled."
+    else: # Pro
+        structure_instruction = "Generate exactly 5 Pillars. Under each, list 5 Topics. (Total ~30 nodes)."
+        focus_instruction = "Balance VIRALITY (Reach) with AUTHORITY (Depth). Ensure a mix of traffic-driving and trust-building content."
+
     # 1. Analyze User Site (if provided)
     user_context = "User has no existing site."
     if user_url:
@@ -121,6 +129,7 @@ def generate_roadmap(niche, user_url, manual_competitors, api_key):
 
     user_message = f"""
     NICHE: {niche}
+    STRATEGY DEPTH: {strategy_depth}
     
     USER_CONTEXT:
     {user_context}
@@ -132,7 +141,9 @@ def generate_roadmap(niche, user_url, manual_competitors, api_key):
     {suggestions_str}
     
     *** CRITICAL INSTRUCTION FOR ROADMAP ***
-    You must identify "Content Gaps" - topics that users are searching for (User Intent) but are NOT fully covered by competitors.
+    1. STRUCTURE: {structure_instruction}
+    2. FOCUS: {focus_instruction}
+    3. GAPS: Identify "Content Gaps" - topics that users are searching for (User Intent) but are NOT fully covered by competitors.
     
     When listing topics under Pillars, use this format:
     - For standard topics: "#### 1. Topic Name"
