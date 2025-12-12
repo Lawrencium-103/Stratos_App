@@ -102,7 +102,8 @@ if st.session_state['gen_scraped_data']:
     # --- 3. Target Platforms ---
     st.markdown("### 3. Target Platforms")
     all_platforms = ["LinkedIn", "X (Twitter)", "Instagram/Facebook", "Reddit", "Threads", "Blog Post 1", "AEO Answer Card"]
-    target_platforms = st.multiselect("Select Content to Generate", all_platforms, default=all_platforms)
+    default_platforms = ["AEO Answer Card", "LinkedIn", "Blog Post 1", "X (Twitter)"]
+    target_platforms = st.multiselect("Select Content to Generate", all_platforms, default=default_platforms)
 
     # --- 4. AI Controls ---
     st.markdown("### 4. AI Controls")
