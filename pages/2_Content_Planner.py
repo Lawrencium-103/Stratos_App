@@ -1,6 +1,6 @@
 import streamlit as st
 import os
-import google.generativeai as genai
+import llm_client
 from dotenv import load_dotenv
 import utils
 import researcher
@@ -8,11 +8,8 @@ import researcher
 # Load Environment
 load_dotenv()
 
-# Get API key from Streamlit secrets (Cloud) or .env (Local)
-try:
-    api_key = st.secrets["GOOGLE_API_KEY"]
-except:
-    api_key = os.getenv("GOOGLE_API_KEY")
+# Get API key
+api_key = llm_client.get_api_key()
 
 # Apply Branding
 utils.load_css()
@@ -70,12 +67,14 @@ if st.button("📅 Architect My Content Empire"):
         else:
             # Generate
             with st.spinner("🤖 Architecting your Content Schedule..."):
-                genai.configure(api_key=api_key)
+            # Generate
+            with st.spinner("🤖 Architecting your Content Schedule..."):
+                # llm_client handles configuration
                 
                 # Candidate models for fallback
                 candidate_models = [
-                    "gemini-2.5-flash",
-                    "gemini-2.0-flash"
+                    "meta-llama/llama-3.1-70b-instruct",
+                    "meta-llama/llama-3.1-8b-instruct"
                 ]
                 
                 full_context = "\n\n".join(context_parts)
@@ -105,8 +104,8 @@ if st.button("📅 Architect My Content Empire"):
 
                 for model_name in candidate_models:
                     try:
-                        model = genai.GenerativeModel(model_name)
-                        response = model.generate_content(prompt)
+                        # llm_client.generate returns an object with .text
+                        response = llm_client.generate(prompt, model=model_name, api_key=api_key)
                         st.session_state['plan_content'] = response.text
                         st.session_state['plan_generated'] = True
                         success = True

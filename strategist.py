@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from duckduckgo_search import DDGS
-import google.generativeai as genai
+import llm_client
 import os
 from fake_useragent import UserAgent
 
@@ -120,20 +120,25 @@ def generate_roadmap(niche, user_url, manual_competitors, api_key):
     {competitor_context}
     """
 
+    # Use OpenRouter via llm_client
+    # Primary: Llama 3.1 70B (Smart)
+    # Fallback: Llama 3.1 8B (Fast)
     candidate_models = [
-        "gemini-2.5-flash",
-        "gemini-2.0-flash"
+        "meta-llama/llama-3.1-70b-instruct",
+        "meta-llama/llama-3.1-8b-instruct"
     ]
 
     response = None
     for model_name in candidate_models:
         try:
             print(f"   Trying model: {model_name}...")
-            model = genai.GenerativeModel(
-                model_name=model_name,
-                system_instruction=system_instruction
+            # llm_client.generate returns a generator if stream=True
+            response = llm_client.generate(
+                prompt=user_message,
+                system_instruction=system_instruction,
+                model=model_name,
+                stream=True
             )
-            response = model.generate_content(user_message, stream=True)
             break # Success
         except Exception as e:
             print(f"   ❌ Failed with {model_name}: {e}")

@@ -2,7 +2,7 @@ import streamlit as st
 import os
 import time
 from dotenv import load_dotenv
-import google.generativeai as genai
+import llm_client
 from streamlit_agraph import agraph, Node, Edge, Config
 import strategist
 import utils
@@ -10,11 +10,8 @@ import utils
 # Load environment variables
 load_dotenv()
 
-# Get API key from Streamlit secrets (Cloud) or .env (Local)
-try:
-    api_key = st.secrets["GOOGLE_API_KEY"]
-except:
-    api_key = os.getenv("GOOGLE_API_KEY")
+# Get API key
+api_key = llm_client.get_api_key()
 
 st.set_page_config(page_title="STRATOS AI", page_icon="⚡", layout="wide")
 

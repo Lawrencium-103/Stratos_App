@@ -1,18 +1,15 @@
 import streamlit as st
 import os
 from dotenv import load_dotenv
-import google.generativeai as genai
+import llm_client
 import researcher
 import utils
 
 # Load environment variables
 load_dotenv()
 
-# Get API key from Streamlit secrets (Cloud) or .env (Local)
-try:
-    api_key = st.secrets["GOOGLE_API_KEY"]
-except:
-    api_key = os.getenv("GOOGLE_API_KEY")
+# Get API key
+api_key = llm_client.get_api_key()
 
 st.set_page_config(page_title="STRATOS: Generator", page_icon="✍️", layout="wide")
 
@@ -112,13 +109,7 @@ if st.session_state['gen_scraped_data']:
             st.error("⚠️ Please select at least one platform.")
         else:
             # Prepare Model
-            genai.configure(api_key=api_key)
-            generation_config = {
-                "temperature": 0.7,
-                "top_p": 0.95,
-                "top_k": 64,
-                "max_output_tokens": 65536,
-            }
+            # llm_client handles configuration
             
             user_message = f"""
             TOPIC: {st.session_state['gen_topic']}
@@ -147,8 +138,8 @@ if st.session_state['gen_scraped_data']:
         
         # Candidate models for fallback
         candidate_models = [
-            "gemini-2.5-flash",
-            "gemini-2.0-flash"
+            "meta-llama/llama-3.1-70b-instruct",
+            "meta-llama/llama-3.1-8b-instruct"
         ]
         
         success = False
@@ -156,14 +147,14 @@ if st.session_state['gen_scraped_data']:
 
         for model_name in candidate_models:
             try:
-                # st.write(f"Trying model: {model_name}...") # Debug line (optional)
-                model = genai.GenerativeModel(
-                    model_name=model_name,
-                    generation_config=generation_config,
-                    system_instruction=system_instruction
+                # llm_client.generate returns a generator if stream=True
+                response_stream = llm_client.generate(
+                    prompt=user_message,
+                    system_instruction=system_instruction,
+                    model=model_name,
+                    stream=True,
+                    api_key=api_key
                 )
-                
-                response_stream = model.generate_content(user_message, stream=True)
                 
                 for chunk in response_stream:
                     full_text += chunk.text

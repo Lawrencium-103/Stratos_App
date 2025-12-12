@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from duckduckgo_search import DDGS
-import google.generativeai as genai
+import llm_client
 import os
 import time
 import random
@@ -95,9 +95,8 @@ def scrape_content(url):
         return ""
 
 def generate_keywords(topic, context, api_key):
-    """Uses Gemini to generate SEO keywords."""
+    """Uses OpenRouter to generate SEO keywords."""
     print("  🔑 Generating SEO keywords...")
-    genai.configure(api_key=api_key)
     
     prompt = f"""
     Based on the following topic and context, generate a comma-separated list of 10 high-impact SEO keywords and phrases.
@@ -107,12 +106,11 @@ def generate_keywords(topic, context, api_key):
     """
 
     # Fallback model list
-    candidate_models = ["gemini-2.5-flash", "gemini-2.0-flash"]
+    candidate_models = ["meta-llama/llama-3.1-8b-instruct", "meta-llama/llama-3.1-70b-instruct"]
     
     for model_name in candidate_models:
         try:
-            model = genai.GenerativeModel(model_name)
-            response = model.generate_content(prompt)
+            response = llm_client.generate(prompt, model=model_name, api_key=api_key)
             return response.text.strip()
         except:
             continue
@@ -128,7 +126,7 @@ def deep_research(topic, api_key, reference_url=None):
     4. Follow-up Search
     """
     print(f"\n🕵️ Deep Researcher Agent starting for: '{topic}'")
-    genai.configure(api_key=api_key)
+    # genai.configure(api_key=api_key) - Handled by llm_client
     
     context_data = []
     sources = []
@@ -171,8 +169,8 @@ def deep_research(topic, api_key, reference_url=None):
     
     follow_up_queries = []
     try:
-        model = genai.GenerativeModel("gemini-1.5-flash")
-        response = model.generate_content(reasoning_prompt)
+        # Use smart model for reasoning
+        response = llm_client.generate(reasoning_prompt, model="meta-llama/llama-3.1-70b-instruct", api_key=api_key)
         queries = response.text.strip().split("|")
         follow_up_queries = [q.strip() for q in queries if q.strip()]
         print(f"  🧠 Missing Info Identified. Searching for: {follow_up_queries}")
