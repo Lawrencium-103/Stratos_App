@@ -94,6 +94,39 @@ def scrape_content(url):
         print(f"  ⚠️ Could not scrape {url}: {e}")
         return ""
 
+def scrape_content_with_markdown(url):
+    """
+    Scrapes URL but preserves STRUCTURE (headers, lists) as Markdown.
+    Critical for 'Content Replicator' analysis.
+    """
+    print(f"  🧬 Scraping Structure (Stealth): {url}...")
+    try:
+        time.sleep(random.uniform(0.5, 1.5))
+        response = requests.get(url, headers=get_stealth_headers(), timeout=15)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        # Cleanup
+        for tag in soup(["script", "style", "nav", "footer", "header", "aside", "iframe", "noscript"]):
+            tag.decompose()
+            
+        # Convert Headers to Markdown
+        for h in soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6']):
+            level = int(h.name[1])
+            h.string = f"\n{'#' * level} {h.get_text().strip()}\n"
+            
+        # Convert Lists
+        for li in soup.find_all('li'):
+            li.string = f"- {li.get_text().strip()}\n"
+            
+        text = soup.get_text(separator=' ', strip=True)
+        return text[:6000] # Allow more context for structure analysis
+        
+    except Exception as e:
+        print(f"  ⚠️ Structure scrape failed: {url} -> {e}")
+        return ""
+
 def generate_keywords(topic, context, api_key):
     """Uses OpenRouter to generate SEO keywords."""
     print("  🔑 Generating SEO keywords...")
