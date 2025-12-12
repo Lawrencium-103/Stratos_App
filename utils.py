@@ -80,6 +80,54 @@ def load_css():
     """, unsafe_allow_html=True)
 
 def header(title, subtitle=None):
+    # Digital Clock (Robust Iframe Implementation)
+    import streamlit.components.v1 as components
+    
+    # HTML/JS for the clock
+    clock_html = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: transparent;
+                color: #FFD700; /* Gold */
+                font-family: 'Courier New', monospace;
+                font-weight: bold;
+                font-size: 16px;
+                display: flex;
+                justify-content: flex-end; /* Align right */
+                align-items: center;
+                height: 100vh;
+            }
+            #clock {
+                padding-right: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="clock">Loading...</div>
+        <script>
+            function updateClock() {
+                const now = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                const dateString = now.toLocaleDateString(undefined, options);
+                const timeString = now.toLocaleTimeString();
+                document.getElementById('clock').innerHTML = dateString + ' | ' + timeString;
+            }
+            setInterval(updateClock, 1000);
+            updateClock();
+        </script>
+    </body>
+    </html>
+    """
+    
+    # Inject iframe with transparent background
+    # Height must be small to fit in header area
+    components.html(clock_html, height=40, scrolling=False)
+
     st.markdown(f"# ⚡ {title}")
     if subtitle:
         st.markdown(f"### *{subtitle}*")
