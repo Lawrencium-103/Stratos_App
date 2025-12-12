@@ -99,6 +99,11 @@ if st.session_state['gen_scraped_data']:
             Constraint: Do NOT just paste it. Integrate it as a "Industry Thought" or "Expert Validation" that adds weight to the argument. It must feel like a genuine connection, not a forced shout-out.
             """
 
+    # --- 3. Target Platforms ---
+    st.markdown("### 3. Target Platforms")
+    all_platforms = ["LinkedIn", "X (Twitter)", "Instagram/Facebook", "Reddit", "Threads", "Blog Post 1", "AEO Answer Card"]
+    target_platforms = st.multiselect("Select Content to Generate", all_platforms, default=all_platforms)
+
     # --- 4. AI Controls ---
     st.markdown("### 4. AI Controls")
     temperature = st.slider("Creativity / Temperature", min_value=0.0, max_value=1.0, value=0.7, step=0.1, help="Lower = More Factual/Strict. Higher = More Creative/Viral.")

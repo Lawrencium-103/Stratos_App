@@ -140,49 +140,74 @@ def track_usage(platform_type):
 
 def display_impact_metrics():
     """
-    Displays the 'Stratos Impact' section with dynamic metrics, like button, and smart sharing.
+    Displays the 'Stratos Impact' section with centered title, realistic growing stats, and a big like button.
     """
     st.markdown("---")
-    st.subheader("🚀 Stratos Impact")
     
-    # Initialize Session State metrics if not present
+    # Centered Title
+    st.markdown("<h2 style='text-align: center; color: #FFD700;'>🚀 Stratos Impact</h2>", unsafe_allow_html=True)
+    
+    # Initialize Session State
     if 'hours_saved' not in st.session_state: st.session_state['hours_saved'] = 0.0
     if 'content_count' not in st.session_state: st.session_state['content_count'] = 0
     if 'likes' not in st.session_state: st.session_state['likes'] = 0
     
-    # Metrics Columns
-    col1, col2, col3, col4 = st.columns(4)
+    # --- Realistic Global Stats Simulation ---
+    # We use time.time() to simulate growth so it's consistent but increasing
+    import time
+    current_time = time.time()
+    launch_time = 1704067200 # Jan 1, 2024 (Arbitrary start)
+    elapsed_seconds = current_time - launch_time
     
-    with col1:
-        st.metric(label="Hours Saved (You)", value=f"{st.session_state['hours_saved']} hrs", delta="Efficiency")
-    with col2:
-        # Simulated "Global" Average (Static for now, but illustrative)
-        avg_saved = 1250 + int(st.session_state['hours_saved'] * 10)
-        st.metric(label="Community Hours Saved", value=f"{avg_saved}+ hrs", delta="Global")
-    with col3:
-        st.metric(label="Content Pieces Generated", value=st.session_state['content_count'])
-    with col4:
-        # Like Button Logic
-        if st.button("❤️ Like Stratos"):
+    # Growth logic: 1 new user every ~2 hours
+    simulated_users = int(1200 + (elapsed_seconds / 7200)) 
+    
+    # Ratios
+    avg_hours_per_user = 4.5
+    avg_content_per_user = 8
+    
+    global_hours = int(simulated_users * avg_hours_per_user) + int(st.session_state['hours_saved'])
+    global_content = int(simulated_users * avg_content_per_user) + st.session_state['content_count']
+    
+    # Layout: Metrics on Left (3 cols), Like Button on Right (1 col)
+    c1, c2, c3, c4 = st.columns([1, 1, 1, 1.2])
+    
+    with c1:
+        st.metric(label="Total Users", value=f"{simulated_users:,}", delta="Growing")
+    with c2:
+        st.metric(label="Community Hours Saved", value=f"{global_hours:,} hrs", delta="Efficiency")
+    with c3:
+        st.metric(label="Content Generated", value=f"{global_content:,}", delta="Velocity")
+        
+    with c4:
+        st.markdown("<br>", unsafe_allow_html=True) # Spacing
+        # Big Like Button Logic
+        if st.button("❤️ Like Stratos", use_container_width=True):
             if st.session_state['likes'] < 3:
                 st.session_state['likes'] += 1
                 st.toast("Thanks for the love! ❤️")
             else:
-                st.toast("You've reached the max likes for this session! Spread the word instead! 🚀")
-        st.write(f"Session Likes: {st.session_state['likes']}/3")
+                st.toast("Max likes reached for this session! Share the love instead! 🚀")
         
+        # Centered Like Count
+        st.markdown(f"<div style='text-align: center; color: gray; font-size: 0.8em;'>Session Likes: {st.session_state['likes']}/3</div>", unsafe_allow_html=True)
+
+    # Your Personal Stats (Subtle)
+    if st.session_state['hours_saved'] > 0:
+        st.markdown(f"<p style='text-align: center; color: #00C851;'>You've saved <b>{st.session_state['hours_saved']} hours</b> this session!</p>", unsafe_allow_html=True)
+
     st.markdown("### 📢 Share Your Strategy")
     st.info("💡 **Pro Tip:** The best way to share is to copy your generated content directly!")
     
-    # Social Share Links (Pre-filled text)
+    # Social Share Links
     share_text = f"I just saved {st.session_state['hours_saved']} hours on my content strategy using Stratos AI! ⚡ #StratosAI #ContentStrategy"
     share_url = "https://stratos-app.streamlit.app"
     
     twitter_url = f"https://twitter.com/intent/tweet?text={share_text}&url={share_url}"
     linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url={share_url}"
     
-    c1, c2 = st.columns(2)
-    with c1:
-        st.link_button("🐦 Tweet Your Savings", twitter_url)
-    with c2:
-        st.link_button("💼 Share on LinkedIn", linkedin_url)
+    c_share_1, c_share_2 = st.columns(2)
+    with c_share_1:
+        st.link_button("🐦 Tweet Your Savings", twitter_url, use_container_width=True)
+    with c_share_2:
+        st.link_button("💼 Share on LinkedIn", linkedin_url, use_container_width=True)
