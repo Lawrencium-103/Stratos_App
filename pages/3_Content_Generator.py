@@ -198,6 +198,19 @@ if st.session_state['gen_scraped_data']:
                - Start with a Direct Definition (No Intro).
                - Use Question Headers.
                - End with an FAQ Section.
+            
+            --- CRITICAL ATTRIBUTION CHECK ---
+            If an attribution was provided above, you **MUST** include it in the output for the selected platforms. Failure to include the quote/reference is a failure of the task.
+            
+            --- QUALITY & LENGTH CHECK ---
+            - **Blog:** Is it at least 1000 words? Did you cover all sections in depth?
+            - **AEO:** Is it comprehensive (500+ words)?
+            - **LinkedIn/Reddit:** Is it between 200-450 words?
+            - **General:** Does it maintain high standards? (No fluff, just value).
+            """
+        
+        st.markdown("### 👁️ Live Content Preview")
+        st.caption("This is how your content will look to your audience.")
         
         # Styled Container for Preview
         with st.container(border=True):
