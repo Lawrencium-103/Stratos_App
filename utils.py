@@ -152,47 +152,67 @@ def display_impact_metrics():
     if 'content_count' not in st.session_state: st.session_state['content_count'] = 0
     if 'likes' not in st.session_state: st.session_state['likes'] = 0
     
-    # --- Realistic Global Stats Simulation (Deterministic) ---
-    import time
-    import math
+    # --- Global State Management (Cross-Session Persistence) ---
+    # Use st.cache_resource to share data across all users/tabs
+    @st.cache_resource
+    class GlobalMetrics:
+        def __init__(self):
+            # Anchor: Dec 1, 2025 (Fresh Launch)
+            # This ensures we start low (near 7 users) and grow
+            self.anchor_time = 1764547200 
+            self.manual_likes = 0 # Likes added by users clicking the button
+            
+        def get_stats(self):
+            import time
+            current_time = time.time()
+            elapsed_hours = (current_time - self.anchor_time) / 3600
+            
+            # 1. Realistic User Count
+            # Start with 7 users. Grow by ~1 user every 5 hours
+            base_users = 7
+            growth_rate = 5 
+            simulated_users = base_users + int(elapsed_hours / growth_rate)
+            
+            # 2. Global Likes
+            # Base (Simulated) + Manual (Real Clicks)
+            base_likes = int(simulated_users * 4.2)
+            total_likes = base_likes + self.manual_likes
+            
+            # 3. Hours Saved
+            avg_hours_saved = 2.5
+            total_hours = int(simulated_users * avg_hours_saved)
+            
+            # 4. Content Generated
+            avg_content = 5
+            total_content = int(simulated_users * avg_content)
+            
+            return simulated_users, total_likes, total_hours, total_content
+
+        def add_like(self):
+            self.manual_likes += 1
+            
+    # Instantiate Global State
+    global_state = GlobalMetrics()
     
-    # 1. Deterministic Growth Base
-    # We anchor to a fixed point so numbers are consistent across tabs/refreshes
-    # Anchor: Dec 1, 2024 (Just before "Launch")
-    anchor_time = 1733011200 
-    current_time = time.time()
-    elapsed_hours = (current_time - anchor_time) / 3600
+    # Get Current Global Stats
+    g_users, g_likes, g_hours, g_content = global_state.get_stats()
     
-    # 2. Realistic User Count
-    # Start with 7 users. Grow by ~1 user every 5 hours (Slow, realistic growth)
-    base_users = 7
-    growth_rate = 5 # Hours per new user
-    simulated_users = base_users + int(elapsed_hours / growth_rate)
-    
-    # 3. Realistic Global Likes
-    # Assume avg 4 likes per user (some return sessions)
-    global_likes_base = int(simulated_users * 4.2)
-    
-    # 4. Total Displayed Likes = Global Base + Your Session Contribution
-    # This makes it feel like YOUR likes are pushing the global number up
-    total_likes_displayed = global_likes_base + st.session_state['likes']
-    
-    # 5. Other Metrics
-    avg_hours_saved = 2.5
-    global_hours = int(simulated_users * avg_hours_saved) + int(st.session_state['hours_saved'])
-    
-    avg_content = 5
-    global_content = int(simulated_users * avg_content) + st.session_state['content_count']
+    # Add Current Session Contributions to Display
+    # (So the user sees their own impact immediately added to the global total)
+    # Note: global_state.manual_likes already includes confirmed likes from other sessions
+    # We just need to ensure we don't double count if we just clicked (handled by rerun)
     
     # Layout: Metrics on Left (3 cols), Like Button on Right (1 col)
     c1, c2, c3, c4 = st.columns([1, 1, 1, 1.2])
     
     with c1:
-        st.metric(label="Total Users", value=f"{simulated_users:,}", delta="Growing")
+        st.metric(label="Total Users", value=f"{g_users:,}", delta="Growing")
     with c2:
-        st.metric(label="Total Likes", value=f"{total_likes_displayed:,}", delta="Community")
+        st.metric(label="Total Likes", value=f"{g_likes:,}", delta="Community")
     with c3:
-        st.metric(label="Hours Saved", value=f"{global_hours:,} hrs", delta="Efficiency")
+        # Add session hours to global hours for display
+        display_hours = g_hours + int(st.session_state['hours_saved'])
+        st.metric(label="Hours Saved", value=f"{display_hours:,} hrs", delta="Efficiency")
         
     with c4:
         st.markdown("<br>", unsafe_allow_html=True) # Spacing
@@ -200,8 +220,9 @@ def display_impact_metrics():
         if st.button("❤️ Like Stratos", use_container_width=True):
             if st.session_state['likes'] < 3:
                 st.session_state['likes'] += 1
+                global_state.add_like() # Increment Global Counter
                 st.toast("Thanks for the love! ❤️")
-                st.rerun() # Rerun to update the metric immediately
+                st.rerun() # Rerun to show updated global count
             else:
                 st.toast("Max likes reached for this session! Share the love instead! 🚀")
         
