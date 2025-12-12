@@ -27,6 +27,7 @@ with st.sidebar:
     comp_url_1 = st.text_input("Competitor 1 URL", placeholder="Optional")
     comp_url_2 = st.text_input("Competitor 2 URL", placeholder="Optional")
     
+    manual_competitors = []
     if comp_url_1: manual_competitors.append(comp_url_1)
     if comp_url_2: manual_competitors.append(comp_url_2)
     
