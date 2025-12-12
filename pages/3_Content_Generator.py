@@ -171,13 +171,20 @@ if st.session_state['gen_scraped_data']:
                  - **Caption:** Write a "Micro-Blog" (150-200 words). Tell a story or give a specific tip. Use short paragraphs.
                  - **Hashtags:** List 10 relevant hashtags.
             
-            4. THREADS / REDDIT (The "Discussion Starter"):
-               - **Goal:** Spark a genuine discussion.
+            4. THREADS (The "Casual Conversation"):
+               - **Goal:** Spark a discussion.
+               - **Length:** **Short & Punchy (< 500 Characters).**
+               - **Structure:**
+                 - **Post:** A single, thought-provoking question or observation.
+                 - **Tone:** Casual, like texting a friend. "Hot take: [Opinion]." No hashtags needed.
+            
+            5. REDDIT (The "Community Insider"):
+               - **Goal:** Provide genuine value to a specific subreddit.
                - **Length:** **200 - 450 Words.**
                - **Structure:**
-                 - **Title/Hook:** A single, thought-provoking question or observation.
-                 - **Body:** Elaborate on the thought. Share a personal experience or a specific observation.
-                 - **Tone:** Casual, like texting a friend (Threads) or "Internet Native" (Reddit). "Hot take: [Opinion]."
+                 - **Title:** A specific question or "How I..." statement. (e.g., "How I solved X").
+                 - **Body:** Share a personal story, a specific tactic, or a "Lessons Learned" list.
+                 - **Tone:** "Internet Native", authentic, humble. NO marketing fluff. NO "In this post". Just talk like a human.
             
             5. BLOG POST (The "Deep Dive Authority"):
                - **Goal:** Rank on Google and serve as a "Comprehensive Guide".
