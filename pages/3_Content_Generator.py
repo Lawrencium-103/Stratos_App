@@ -180,35 +180,23 @@ if st.session_state['gen_scraped_data']:
             
             5. BLOG POST (The "Deep Dive Authority"):
                - **Goal:** Rank on Google and serve as a "Comprehensive Guide".
-               - **Length:** **500 - 1,500 Words.** (Quality over Fluff).
+               - **Length:** **MINIMUM 1,000 WORDS.** (Target: 1,500+).
                - **Structure:**
                  - **Title:** SEO-Optimized, Clickable Title (e.g., "The Ultimate Guide to...").
                  - **Introduction:** Hook the reader, define the problem, and state the thesis.
-                 - **Body:** Use H2 and H3 headers. Break down the topic into:
-                   - "What is [Topic]?"
-                   - "Why it Matters" (Data/Stats)
-                   - "Key Strategies/Examples" (The Core Value)
+                 - **Body:** Use H2 and H3 headers. You MUST write **at least 300 words per section** below:
+                   - "What is [Topic]?" (Definition & Context)
+                   - "Why it Matters" (Data/Stats - Use the Research)
+                   - "Key Strategies/Examples" (The Core Value - Go Deep)
                    - "Common Pitfalls"
                  - **Conclusion:** Summary and final thought.
-               - **Content Depth:** Do NOT write a summary. Write a GUIDE. Use specific examples, analogies, and technical details where appropriate.
+               - **Content Depth:** **IGNORE BREVITY.** Write a GUIDE. Use specific examples, analogies, and technical details. If you find yourself summarizing, STOP and EXPAND.
             
             6. AEO ANSWER CARD (If selected):
-               - **Length:** **500 - 1,500 Words.** (Comprehensive Answer).
+               - **Length:** **500 - 1,000 Words.** (Comprehensive Answer).
                - Start with a Direct Definition (No Intro).
                - Use Question Headers.
                - End with an FAQ Section.
-            
-            --- CRITICAL ATTRIBUTION CHECK ---
-            If an attribution was provided above, you **MUST** include it in the output for the selected platforms. Failure to include the quote/reference is a failure of the task.
-            
-            --- QUALITY & LENGTH CHECK ---
-            - **Blog/AEO:** Is it between 500-1500 words?
-            - **LinkedIn/Reddit:** Is it between 200-450 words?
-            - **General:** Does it maintain high standards? (No fluff, just value).
-            """
-        
-        st.markdown("### 👁️ Live Content Preview")
-        st.caption("This is how your content will look to your audience.")
         
         # Styled Container for Preview
         with st.container(border=True):
