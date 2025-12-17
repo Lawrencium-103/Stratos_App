@@ -17,7 +17,7 @@ st.set_page_config(page_title="STRATOS AI", page_icon="⚡", layout="wide")
 
 # Apply Branding
 utils.load_css()
-utils.header("STRATOS: The Strategist", "Visual Intelligence & Roadmap Engine")
+utils.header("STRATOS: The Strategist (v1.1)", "Visual Intelligence & Roadmap Engine")
 
 # Sidebar Inputs
 with st.sidebar:
