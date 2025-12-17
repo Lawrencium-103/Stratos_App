@@ -291,6 +291,9 @@ def display_impact_metrics():
     twitter_url = f"https://twitter.com/intent/tweet?text={share_text}&url={share_url}"
     linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url={share_url}"
     
+    c_share_1, c_share_2 = st.columns(2)
+    with c_share_1:
+         st.link_button("🐦 Tweet Your Savings", twitter_url, use_container_width=True)
     with c_share_2:
         st.link_button("💼 Share on LinkedIn", linkedin_url, use_container_width=True)
     

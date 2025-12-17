@@ -65,7 +65,10 @@ with col_scan:
                     # Format trends for display and context
                     trend_text = ""
                     for t in trends:
-                        trend_text += f"- [{t['title']}]({t['href']}) ({t['date']})\n"
+                        # DDGS News returns 'url' or 'link', not always 'href'
+                        link = t.get('url', t.get('href', '#'))
+                        date = t.get('date', 'Recent')
+                        trend_text += f"- [{t['title']}]({link}) ({date})\n"
                     
                     st.session_state['trend_data'] = trend_text
                     st.success("Trends Found!")
