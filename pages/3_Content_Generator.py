@@ -86,7 +86,7 @@ if st.session_state['gen_scraped_data']:
         attr_text = st.text_area("Attribution Content (Quote, Insight, or Author Reference)", 
                                  placeholder="e.g. 'As Dr. Smith says, prevention is better than cure.'")
         attr_platforms = st.multiselect("Apply to Platforms", 
-                                        ["LinkedIn", "X (Twitter)", "Instagram/Facebook", "Reddit", "Threads", "Blog Post 1"], 
+                                        ["LinkedIn", "X (Twitter)", "Instagram", "Facebook", "Reddit", "Threads", "Blog Post 1"], 
                                         default=["LinkedIn"])
         
         if attr_text and attr_platforms:
@@ -101,9 +101,20 @@ if st.session_state['gen_scraped_data']:
 
     # --- 3. Target Platforms ---
     st.markdown("### 3. Target Platforms")
-    all_platforms = ["LinkedIn", "X (Twitter)", "Instagram/Facebook", "Reddit", "Threads", "Blog Post 1", "AEO Answer Card"]
-    default_platforms = ["AEO Answer Card", "LinkedIn", "Blog Post 1", "X (Twitter)"]
-    target_platforms = st.multiselect("Select Content to Generate", all_platforms, default=default_platforms)
+    
+    # Mode Toggle
+    gen_mode = st.radio("Generation Mode:", ["Single Platform (Focus Mode)", "Multi-Channel Campaign (Strategy Mode)"], horizontal=True, help="Single Platform = Higher Quality, Viral-Ready. Multi-Channel = Broader Reach.")
+    
+    all_platforms = ["LinkedIn", "X (Twitter)", "Instagram", "Facebook", "Reddit", "Threads", "Blog Post 1", "AEO Answer Card"]
+    
+    if "Single" in gen_mode:
+        # Focus Mode: Select ONE
+        selected_platform = st.selectbox("Select Target Platform", all_platforms)
+        target_platforms = [selected_platform] # Wrap in list for compatibility
+    else:
+        # Campaign Mode: Select MANY
+        default_platforms = ["AEO Answer Card", "LinkedIn", "Blog Post 1", "X (Twitter)"]
+        target_platforms = st.multiselect("Select Content to Generate", all_platforms, default=default_platforms)
 
     # --- 4. AI Controls ---
     st.markdown("### 4. AI Controls")
@@ -139,6 +150,9 @@ if st.session_state['gen_scraped_data']:
             - Output CLEAN, renderable markdown.
             - Use bolding, italics, and headers to make it look "ready to publish".
             
+            *** QUALITY SETTING: {"PERFECTION_MODE" if "Single" in gen_mode else "CAMPAIGN_MODE"} ***
+            {"You have ONE job. Focus ALL your creativity on this single piece. It must be VIRAL, PERFECT, and READY TO POST. No generic fluff." if "Single" in gen_mode else "Maintain consistent voice across all platforms."}
+            
             Do NOT generate content for any other platforms.
             
             --- PLATFORM SPECIFIC RULES (STRICT) ---
@@ -163,13 +177,21 @@ if st.session_state['gen_scraped_data']:
                  - **Tweet 8 (The CTA):** "If you found this useful, follow me for more on [Niche]."
                - **Tone:** Fast, punchy, slightly aggressive or "edgy". Use line breaks for rhythm.
             
-            3. INSTAGRAM / FACEBOOK (The "Visual Storyteller"):
-               - **Goal:** Stop the scroll with visuals + story.
+            3. INSTAGRAM (The "Aesthetic Visual"):
+               - **Goal:** Stop the scroll with VISUALS first, caption second.
                - **Structure:**
-                 - **Slide 1 (Image Prompt):** Describe a high-contrast, stopping image.
-                 - **Slide 1 (Text Overlay):** A 5-word hook.
-                 - **Caption:** Write a "Micro-Blog" (150-200 words). Tell a story or give a specific tip. Use short paragraphs.
-                 - **Hashtags:** List 10 relevant hashtags.
+                 - **Visual Suggestion:** Describe a high-contrast, moody, or "Aesthetic" image concept (e.g., "Dark mode workspace with gold accent").
+                 - **Text Overlay:** A 3-5 word punchy hook.
+                 - **Caption:** Short, moody, and spacing-heavy. Focus on the "Vibe". 
+                 - **Hashtags:** block of 15 curated "Aesthetic" hashtags.
+            
+            4. FACEBOOK (The "Community Story"):
+               - **Goal:** Engagement and Shares in Groups.
+               - **Structure:**
+                 - **The Story:** Start with a personal "I remember when..." or "We just discovered...".
+                 - **The Value:** Relatable, community-focused advice. "Here is what we learned."
+                 - **Tone:** Warm, Inclusive, Friendly (unlike the sharp LinkedIn tone).
+                 - **CTA:** "Tag a friend who needs to see this."
             
             4. THREADS (The "Casual Conversation"):
                - **Goal:** Spark a discussion.

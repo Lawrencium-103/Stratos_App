@@ -46,7 +46,40 @@ with col4:
         help="Select the days you want to be active."
     )
 
-# --- 3. Custom Input (Conditional) ---
+
+# --- 3. Trend Hunter (Breaking News) ---
+st.markdown("### 3. Trend Hunter™ (Real-Time News)")
+st.info("💡 Scan for breaking news (Last 3 Days) to make your content timely.")
+
+if 'trend_data' not in st.session_state: st.session_state['trend_data'] = ""
+
+col_trend, col_scan = st.columns([3, 1])
+with col_trend:
+    trend_keyword = st.text_input("Trend Keyword", placeholder="e.g. AI Regulation", label_visibility="collapsed")
+with col_scan:
+    if st.button("🔥 Scan Trends"):
+        if trend_keyword:
+            with st.spinner("⚡ Hunting for Breaking News..."):
+                trends = researcher.find_trending_news(trend_keyword)
+                if trends:
+                    # Format trends for display and context
+                    trend_text = ""
+                    for t in trends:
+                        trend_text += f"- [{t['title']}]({t['href']}) ({t['date']})\n"
+                    
+                    st.session_state['trend_data'] = trend_text
+                    st.success("Trends Found!")
+                else:
+                    st.warning("No recent breaking news found.")
+        else:
+            st.warning("Enter a keyword.")
+
+if st.session_state['trend_data']:
+    with st.expander("🔥 View Breaking Trends", expanded=True):
+        st.markdown(st.session_state['trend_data'])
+
+# --- 4. Custom Input (Conditional) ---
+st.markdown("### 4. Custom Input")
 custom_notes = ""
 if use_custom_data:
     custom_notes = st.text_area("Enter Custom Goals, Topics, or Notes:", placeholder="e.g. Focus on launching our new AI feature next week...")
@@ -66,6 +99,11 @@ if st.button("📅 Architect My Content Empire"):
                 context_parts.append(f"STRATEGIC ROADMAP:\n{st.session_state['roadmap_text']}")
             else:
                 st.warning("⚠️ No Strategist Data found. Please run the 'Strategist' first or uncheck 'Use Strategist Data'.")
+        
+        # Part B: Trend Data (Rank High)
+        if st.session_state['trend_data']:
+            context_parts.append(f"BREAKING NEWS / TRENDS (PRIORITY): \n{st.session_state['trend_data']}")
+            st.toast("🔥 Including Breaking Trends in the Plan!")
         
         # Part B: Custom Data + Research
         if use_custom_data and custom_notes:

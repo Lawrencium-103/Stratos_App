@@ -107,7 +107,11 @@ if st.button("🧬 Replicate & Upgrade content"):
                 1. ANALYZE the competitors for STRUCTURE and RANKING FACTORS.
                 2. USE their structure, BUT...
                 3. FILL it with *MY SPECIFIC KNOWLEDGE* (provided above). 
-                It makes no sense to just copy their facts. You must replace their generic info with my specific insights where possible.
+                *** CRITICAL: COHESION & FLOW ***
+                - The final article must read as **ONE unified voice**. 
+                - Do NOT simply append sections from different competitors like a "Frankenstein" monster. 
+                - You must **weave** them together with smooth transitions. 
+                - The reader should NOT be able to tell this came from multiple sources.
                 
                 *** OUTPUT REQUIREMENTS ***
                 

@@ -40,6 +40,45 @@ with st.sidebar:
     )
     
     run_btn = st.button("🚀 Initialize Strategy Engine")
+    
+    st.markdown("---")
+    
+    # --- SaaS Monetization Logic (Smart Payment Routing) ---
+    st.markdown("### 💎 Unlock Full Access")
+    
+    # 1. Geo-Detection
+    # We use a simple try-except block to avoid crashing if the API fails
+    user_country = "US" # Default to International
+    try:
+        import requests
+        response = requests.get('https://ipapi.co/json/', timeout=3)
+        if response.status_code == 200:
+            data = response.json()
+            user_country = data.get('country_code', 'US')
+    except:
+        pass # Fallback to US if offline or API error
+        
+    # 2. Dynamic Button Rendering
+    if user_country == "NG":
+        # Nigeria: Paystack (Naira)
+        st.info("🇳🇬 **Nigerian Pricing Detected**")
+        st.markdown("""
+        <a href="https://paystack.com/pay/stratos-ng" target="_blank">
+            <button style="width: 100%; background-color: #00C851; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                💳 Get Pro Access (₦5,000/mo)
+            </button>
+        </a>
+        """, unsafe_allow_html=True)
+    else:
+        # Global: Lemon Squeezy (USD)
+        st.info(f"🌍 **International Pricing ({user_country})**")
+        st.markdown("""
+        <a href="https://stratos.lemonsqueezy.com/checkout" target="_blank">
+            <button style="width: 100%; background-color: #7047EB; color: white; border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                💳 Get Pro Access ($97/mo)
+            </button>
+        </a>
+        """, unsafe_allow_html=True)
 
 if run_btn and niche and api_key:
     with st.spinner("🕵️ The Strategist is analyzing the web... (This may take 1-2 mins)"):

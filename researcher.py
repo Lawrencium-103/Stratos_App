@@ -66,6 +66,24 @@ def search_web(query, max_results=3):
         
     return results
 
+def find_trending_news(topic):
+    """
+    Finds 'Breaking News' (Last 3 Days) for a topic.
+    Returns a list of dicts: {'title': '', 'href': '', 'date': '', 'body': ''}
+    """
+    print(f"  ⚡ Hunting for Breaking News on: {topic}...")
+    results = []
+    try:
+        with DDGS() as ddgs:
+            # timelimit='d3' = Past 3 Days
+            news_gen = ddgs.news(topic, region="wt-wt", safesearch="off", timelimit="d3", max_results=5)
+            for r in news_gen:
+                results.append(r)
+    except Exception as e:
+        print(f"  ❌ Trend Hunter failed: {e}")
+        
+    return results
+
 def scrape_content(url):
     """Scrapes the main text content from a URL using stealth headers."""
     print(f"  ⬇️ Scraping (Stealth): {url}...")
